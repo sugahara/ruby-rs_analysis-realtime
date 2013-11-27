@@ -33,9 +33,9 @@ module RSAnalysis
   end
 
   class TimeseriesLogger < HurstLogger
-    def log_timeseries(data)
-      data.each do |d|
-        info(d)
+    def log_timeseries(timestamp,data)
+      data.each_with_index do |d,i|
+        info(timestamp[i]+" "+d.to_s)
       end
     end
   end
