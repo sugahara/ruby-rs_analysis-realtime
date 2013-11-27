@@ -82,9 +82,9 @@ class Main2
 
       files.each do |name|
         Net::SCP.start(host, id, options) do |scp|
-          puts "#{Time.now} uploading file... #{name}"
+          #puts "#{Time.now} uploading file... #{name}"
           scp.upload!("#{name}",remote_dir)
-          puts "#{Time.now} uploaded. #{name}"
+          #puts "#{Time.now} uploaded. #{name}"
         end
         #puts "#{Time.now} detele file #{name}"
         #FileUtils.rm("#{name}")
