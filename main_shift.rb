@@ -3,6 +3,7 @@ require File.expand_path("../array.rb",__FILE__)
 require File.expand_path("../logger.rb",__FILE__)
 require File.expand_path("../error.rb",__FILE__)
 require File.expand_path("../timeseries.rb",__FILE__)
+require 'gsl'
 require 'net/ssh'
 require 'net/scp'
 require 'fileutils'
@@ -26,6 +27,10 @@ class Main2
   hurst_change_logger = RSAnalysis::HurstLogger.new(STATISTICS_DIR+"/#{@file_name}.hurst")
   hurst_change_logger.info("#Number MeanHurst MaxHurst MinHurst")
   ts = Timeseries.new(900)
+
+  scp_conf_file = File.open("scp.config",'r')
+  scp_conf = scp_conf_file.readlines.map!{|v| v.chomp}
+  scp_conf_file.close
 
   data_index = 0
   while str = STDIN.gets do
@@ -67,12 +72,16 @@ class Main2
         hurst_trans_logger.info("#{i} #{hurst[0]} #{hurst[1]} #{hurst[2]}") if hurst != nil
       end
 
-      remote_dir = "/Users/JunSugahara/temp"
-      host = "akimac01.cse.kyoto-su.ac.jp"
-      id = "JunSugahara"
+      data_vec = GSL::Vector.alloc(@data)
+      puts "mean: #{data_vec.mean}"
+      puts "stddev: #{data_vec.sd}"
+
+      remote_dir = scp_conf[0]
+      host = scp_conf[1]
+      id = scp_conf[2]
       options = {
-        :keys => "/home/sugahara/.ssh/sugahara-ruby",
-        :passphrase => "sugahara"
+        :keys => scp_conf[3], 
+        :passphrase => sco_conf[4]
       }
       files = []
       files << STATISTICS_DIR+"/#{@file_name}.hurst"
