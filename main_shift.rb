@@ -86,10 +86,11 @@ class Main2
         :passphrase => sco_conf[4]
       }
       files = []
-      files << STATISTICS_DIR+"/#{@file_name}.hurst"
-      files << STATISTICS_DIR+"/#{@file_name}#{data_index}.rsresult"
-      files << STATISTICS_DIR+"/#{@file_name}#{data_index}.ts"
-      files << STATISTICS_DIR+"/#{@file_name}#{data_index}.hursttrans"
+      files << STATISTICS_DIR+"/#{@file_name}.shift_hurst"
+      files << STATISTICS_DIR+"/#{@file_name}#{data_index}.shift_rsresult"
+      files << STATISTICS_DIR+"/#{@file_name}#{data_index}.shift_ts"
+      files << STATISTICS_DIR+"/#{@file_name}#{data_index}.shift_hursttrans"
+      file << STATISTICS_DIR+"/#{@file_name}.ts"
 
       files.each do |name|
         Net::SCP.start(host, id, options) do |scp|
